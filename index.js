@@ -1,26 +1,31 @@
 const express = require('express');
 const app = express();
 var cors = require('cors')
-app.use(cors());
+const dotenv = require('dotenv');
+const mongoose = require('mongoose');
+const PORT = process.env.PORT || 5000;
 var bodyParser = require('body-parser')
+
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-const mongoose = require('mongoose');
+require('dotenv').config();
+dotenv.config();
 
 MONGODB_URL= 'mongodb+srv://learnnodejs:learnnodejslearnnodejslearnnodejs@cluster0.wdwpr.mongodb.net/test_api_student?retryWrites=true&w=majority';
+
 mongoose.connect(
-    MONGODB_URL, 
-    { useNewUrlParser: true }
-  )
-  .then((result) => console.log("Connection"))
-  .catch((error) => console.log('Error'));
+  MONGODB_URL,
+    { useNewUrlParser: true, useUnifiedTopology: true },
+    () => {
+        console.log('Connected to MongoDB');
+    },
+);
 
-
-const PORT = process.env.PORT || 3000;
-
+app.use(cors());
 const locationRoute = require('./api/routes/location.route');
 
 app.use("/v1/api/location",locationRoute);
+
 
 app.listen(PORT, () => console.log(`server started ${PORT}`))

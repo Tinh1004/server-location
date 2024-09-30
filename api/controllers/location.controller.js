@@ -1,3 +1,4 @@
+const { response } = require('express');
 const Location = require('../models/Location.model');
 
 const locationController = {
@@ -14,10 +15,10 @@ const locationController = {
     getLocations: async (req, res) => {
         try {
             const locations = await Location.find();
-            return res.status(200).json(locations);
+            res.status(200).json(locations);
         } catch (err) {
             console.log(err);
-            return res.status(500).json({ msg: err.message });
+            res.status(500).json({ msg: err.message });
         }
     },
     deleteAllLocation: async (req, res) => {
